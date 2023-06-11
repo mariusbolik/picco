@@ -24,10 +24,26 @@ export default function UploadForm() {
   const [files, setFile] = useState([]);
   const [isActive, setIsActive] = useState(false);
 
-  const addFile = (value) => {
+  const addFile = async (value) => {
+
+    if (!value) {
+      return;
+    }
+
+    await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(value)
+  
+      reader.onload = (e) => {
+        const blob = new Blob([e.target.result], { type: value.type});
+        value.previewUrl = URL.createObjectURL(blob);
+        resolve(value.previewUrl);
+      }
+    });
     value.ext = value.type.split("/")[1].toUpperCase();
     value.megabytes = humanFileSize(value.size);
     value.progress = 0;
+
     console.log(value);
 
     if (files.find((file) => file.name === value.name)) {
@@ -35,10 +51,22 @@ export default function UploadForm() {
       return;
     }
     setFile((prevData) => [value].concat(prevData));
-    // confetti({
-    //   particleCount: 40,
-    //   spread: 20
-    // });
+    confetti({
+      particleCount: 40,
+      spread: 20,
+      colors: ['#b1d6c9', '#74b1ff', '#f7d6c8']
+    });
+
+    console.log('File List:', files)
+    // setInterval(() => {
+    //   const fileName = 'Bildschirmfoto 2023-05-22 um 21.53.37.png';
+    //   setFile((prevData) => prevData.find(file => file.name === fileName).progress = 50);
+    //   // if (files.length) {
+    //   //   files[0].progress++;
+    //   //   console.log('Progress:');
+    //   // }
+
+    // }, 500);
   };
 
   function humanFileSize(size) {
@@ -53,7 +81,7 @@ export default function UploadForm() {
   return (
     <main>
       {/* <div className={isActive ? "animate__animated animate__pulse" : ""}> */}
-      <div className="card">
+      <div className="card animate__animated animate__fadeInDown">
         <Player
           autoplay
           loop
@@ -76,16 +104,16 @@ export default function UploadForm() {
             >
               <div className="item-inner grow-item">
                 <div className="img-preview">
-                  <img src="https://hips.hearstapps.com/hmg-prod/images/beautiful-smooth-haired-red-cat-lies-on-the-sofa-royalty-free-image-1678488026.jpg?crop=0.668xw:1.00xh;0.119xw,0&resize=1200:*" />
+                  <img src={file?.previewUrl} />
                 </div>
 
                 <span className="file-meta">
-                  <p className="file-name">{file.name}</p>
+                  <p className="file-name">{file?.name}</p>
                   <p className="file-info">
                     {file.ext} • {file.megabytes}
                   </p>
                   <div className="progress-bar">
-                    <div className="progress" style={{'width': file?.progress}}></div>
+                    <div className="progress" style={{'width': file?.progress + 'px'}}></div>
                   </div>
                 </span>
                 <span className="fab">
