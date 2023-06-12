@@ -51,11 +51,11 @@ export default function UploadForm() {
       return;
     }
     setFile((prevData) => [value].concat(prevData));
-    confetti({
-      particleCount: 40,
-      spread: 20,
-      colors: ['#b1d6c9', '#74b1ff', '#f7d6c8']
-    });
+    // confetti({
+    //   particleCount: 40,
+    //   spread: 20,
+    //   colors: ['#b1d6c9', '#74b1ff', '#f7d6c8']
+    // });
 
     console.log('File List:', files)
     // setInterval(() => {
@@ -79,7 +79,7 @@ export default function UploadForm() {
   }
 
   return (
-    <main>
+    <main id="upload-form">
       {/* <div className={isActive ? "animate__animated animate__pulse" : ""}> */}
       <div className="card animate__animated animate__fadeInDown">
         <Player
