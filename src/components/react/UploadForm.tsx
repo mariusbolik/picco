@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { Player } from "@lottiefiles/react-lottie-player";
-import confetti from "canvas-confetti";
+// import confetti from "canvas-confetti";
 
 import Link from 'iconoir/icons/link.svg'
 
@@ -21,58 +21,56 @@ const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function UploadForm() {
   const [count, setCount] = useState(50);
-  const [files, setFile] = useState([]);
+  const [files, setFile] = useState<FilePreview[]>([]);
   const [isActive, setIsActive] = useState(false);
 
-  const addFile = async (value) => {
+  const addFile = async (value: File) => {
 
     if (!value) {
       return;
     }
 
-    await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(value)
+    const _5mb = 5242880;
+    if (value.size > _5mb) {
+      alert('Max. 5mb per file!')
+      return;
+    }
+
+    // await new Promise((resolve, reject) => {
+    //   const reader = new FileReader();
+    //   reader.readAsArrayBuffer(value)
   
-      reader.onload = (e) => {
-        const blob = new Blob([e.target.result], { type: value.type});
-        value.previewUrl = URL.createObjectURL(blob);
-        resolve(value.previewUrl);
-      }
-    });
-    value.ext = value.type.split("/")[1].toUpperCase();
-    value.megabytes = humanFileSize(value.size);
-    value.progress = 0;
+    //   reader.onload = (e) => {
+    //     const blob = new Blob([e.target.result], { type: value.type});
+    //     value.previewUrl = URL.createObjectURL(blob);
+    //     resolve(value.previewUrl);
+    //   }
+    // });
+    const filePreview = {
+      name: value.name,
+      previewUrl: URL.createObjectURL(value),
+      ext: value.type.split("/")[1].toUpperCase(),
+      megabytes: humanFileSize(value.size),
+      progress: 0
+    };
+    console.log(filePreview);
 
-    console.log(value);
-
-    if (files.find((file) => file.name === value.name)) {
+    if (files.find((item) => item.name === value.name)) {
       console.log("File already exists!");
       return;
     }
-    setFile((prevData) => [value].concat(prevData));
+    setFile((prevData) => [filePreview].concat(prevData as any) as any);
     // confetti({
     //   particleCount: 40,
     //   spread: 20,
     //   colors: ['#b1d6c9', '#74b1ff', '#f7d6c8']
     // });
-
-    console.log('File List:', files)
-    // setInterval(() => {
-    //   const fileName = 'Bildschirmfoto 2023-05-22 um 21.53.37.png';
-    //   setFile((prevData) => prevData.find(file => file.name === fileName).progress = 50);
-    //   // if (files.length) {
-    //   //   files[0].progress++;
-    //   //   console.log('Progress:');
-    //   // }
-
-    // }, 500);
   };
 
-  function humanFileSize(size) {
+  function humanFileSize(size: number) {
     var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
     return (
-      (size / Math.pow(1024, i)).toFixed(2) * 1 +
+      Number((size / Math.pow(1024, i)).toFixed(2)) * 1 +
       " " +
       ["B", "kB", "MB", "GB", "TB"][i]
     );
@@ -127,4 +125,12 @@ export default function UploadForm() {
       {/* </div> */}
     </main>
   );
+}
+
+interface FilePreview {
+  name: string;
+  previewUrl: string;
+  ext: string;
+  megabytes: number;
+  progress: number;
 }

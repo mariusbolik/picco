@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Container, Row, Col } from 'react-grid-system';
+import { setConfiguration } from 'react-grid-system';
+
+setConfiguration({ containerWidths: [540, 740, 960, 1140, 1320, 1810] });
 
 const directLink = "https://picco.co/img/jhHS89edhWe8.png";
 const embedCode = `<img src="${directLink}" alt="Name of the Pic" />`;
@@ -9,15 +12,6 @@ export default function ImagePreview() {
   const [count, setCount] = useState(50);
   const [files, setFile] = useState([]);
   const [isActive, setIsActive] = useState(false);
-
-  function humanFileSize(size) {
-    var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
-    return (
-      (size / Math.pow(1024, i)).toFixed(2) * 1 +
-      " " +
-      ["B", "kB", "MB", "GB", "TB"][i]
-    );
-  }
 
   return (
     <main id="image-preview">
