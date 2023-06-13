@@ -10,13 +10,14 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^6.4.0",
     "@astrojs/react": "^2.2.1",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@types/mime-types": "^2.1.1",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "animate.css": "^4.1.1",
-    "astro": "^2.5.0",
+    "astro": "^2.6.0",
     "axios": "^1.4.0",
     "iconoir": "^6.8.0",
     "nanoid": "^4.0.2",
