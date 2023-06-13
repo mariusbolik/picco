@@ -1,0 +1,195 @@
+---
+// Styles
+import "animate.css";
+import "../../../styles/main.scss";
+import "../../../styles/fonts.scss";
+
+// Components
+import WavesDivider from "../../components/astro/WavesDivider.astro";
+import Footer from "../../components/astro/Footer.astro";
+
+import axios from "axios";
+import { Models } from "node-appwrite";
+import { Container, Row, Col, setConfiguration } from "react-grid-system";
+
+setConfiguration({ containerWidths: [540, 740, 960, 1140, 1320, 1810] });
+
+const { id } = Astro.params;
+const href = Astro.url.href;
+
+const response = await axios.get(`${Astro.url.origin}/api/files/${id}`);
+const file = response.data as Models.File;
+
+const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/uploads/files/${file.$id}/view?project=picco`;
+const downloadUrl = `https://cloud.appwrite.io/v1/storage/buckets/uploads/files/${file.$id}/download?project=picco`;
+const htmlEmbedCode = `<a href="${href}" target="_blank"><img src="${imageUrl}" alt='Image'/></a>`;
+const redditEmbedCode = `[${file.name}](${href})`;
+const markdownCode = `[![${file.name}](${imageUrl})](${href})`;
+const forumEmbedCode = `[url=${href}][img]${imageUrl}[/img][/url]`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{file.name}</title>
+  </head>
+  <body>
+    <div class="background-container center-content">
+      <h1 class="main-title animate__animated animate__fadeIn">
+        The #1 Photo & Video<br />Sharing Solution
+      </h1>
+      <img
+        class="green-shape animate__animated animate__fadeIn animate__delay-1s"
+        src="/img/shapes/green-shape.png"
+      />
+      <img
+        class="red-shape animate__animated animate__fadeIn animate__delay-2s"
+        src="/img/shapes/red-shape.png"
+      />
+      <img
+        class="blue-shape animate__animated animate__fadeIn animate__delay-3s"
+        src="/img/shapes/blue-shape.png"
+      />
+    </div>
+    <div style="position: relative;">
+      <WavesDivider color="#fff" position="bottom" />
+    </div>
+
+    <Container
+      id="image-preview"
+      className="animate__animated animate__fadeInDown"
+    >
+      <Row>
+        <Col md={8} sm={12} xs={12}>
+          <div class="card">
+            <img class="uploaded-image" src={imageUrl} />
+          </div>
+        </Col>
+        <Col md={4} sm={12} xs={12}>
+          <div class="card">
+            <div class="file-sidebar">
+              <div class="sidebar-item">
+                <p class="title">Uploaded</p>
+                <p class="text">On {file.$createdAt.split('T')[0]} by Anonymous</p>
+              </div>
+              <div class="sidebar-item">
+                <p class="title">Share Link</p>
+                <p class="text">
+                  <a href={href} target="_blank" style={{ textDecoration: "none" }}>
+                    {href}
+                  </a>
+                </p>
+              </div>
+              <div class="sidebar-item">
+                <p class="title">Direct Link</p>
+                <p class="text">
+                  <a href={imageUrl} target="_blank" style={{ textDecoration: "none" }}>
+                    {imageUrl}
+                  </a>
+                </p>
+              </div>
+              <div class="sidebar-item">
+                <p class="title">HTML Code</p>
+                <pre>
+                  <code>{htmlEmbedCode}</code>
+                </pre>
+              </div>
+
+              <div class="sidebar-item">
+                <p class="title">Markdown Embed Code</p>
+                <pre>
+                  <code>{markdownCode}</code>
+                </pre>
+              </div>
+
+              <div class="sidebar-item">
+                <p class="title">Reddit Embed Code</p>
+                <pre>
+                  <code>{redditEmbedCode}</code>
+                </pre>
+              </div>
+
+              <div class="sidebar-item">
+                <p class="title">Forum Embed Code</p>
+                <pre>
+                  <code>{forumEmbedCode}</code>
+                </pre>
+              </div>
+
+              <div class="sidebar-item">
+                <p class="title">Actions</p>
+                <a
+                  class="button"
+                  href={downloadUrl}
+                  style={{ marginTop: "10px" }}
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+    <Footer />
+  </body>
+</html>
+<style lang="scss">
+  #image-preview {
+    margin-top: -200px;
+    padding-bottom: 100px;
+  }
+
+  img.uploaded-image {
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .file-sidebar {
+    .sidebar-item {
+      padding: 14px 0;
+      border-bottom: solid #edf3f5 1px;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom: unset;
+      }
+    }
+
+    .title {
+      font-weight: 500;
+      margin: 0 0 4px 0;
+    }
+
+    .text {
+      color: gray;
+      font-size: 0.875rem;
+      margin: 0;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+  }
+
+  pre {
+    background-color: #edf3f5;
+    padding: 10px;
+    color: grey;
+    border-radius: 6px;
+    border: 1px solid lightgray;
+    word-wrap: break-word;
+    white-space: normal;
+    margin-bottom: 0;
+  }
+
+  .card {
+    margin-bottom: 20px;
+  }
+</style>
+<script lang="ts"></script>
