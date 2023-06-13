@@ -5,14 +5,15 @@ import "../../styles/main.scss";
 import "../../styles/fonts.scss";
 
 // Components
-import UploadForm from "../components/react/UploadForm.jsx";
+import UploadForm from "../components/react/UploadForm.tsx";
 import WavesDivider from "../components/astro/WavesDivider.astro";
+import Footer from "../components/astro/Footer.astro";
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Picco</title>
@@ -22,17 +23,78 @@ import WavesDivider from "../components/astro/WavesDivider.astro";
       <h1 class="main-title animate__animated animate__fadeIn">
         The #1 Photo & Video<br />Sharing Solution
       </h1>
-      <img class="green-shape animate__animated animate__fadeIn animate__delay-1s" src="/img/shapes/green-shape.png" />
-      <img class="red-shape animate__animated animate__fadeIn animate__delay-2s" src="/img/shapes/red-shape.png" />
-      <img class="blue-shape animate__animated animate__fadeIn animate__delay-3s" src="/img/shapes/blue-shape.png" />
+      <img
+        class="green-shape animate__animated animate__fadeIn animate__delay-1s"
+        src="/img/shapes/green-shape.png"
+      />
+      <img
+        class="red-shape animate__animated animate__fadeIn animate__delay-2s"
+        src="/img/shapes/red-shape.png"
+      />
+      <img
+        class="blue-shape animate__animated animate__fadeIn animate__delay-3s"
+        src="/img/shapes/blue-shape.png"
+      />
     </div>
     <div style="position: relative;">
-      <WavesDivider color="#fff" position="bottom"/>
+      <WavesDivider color="#fff" position="bottom" />
     </div>
     <div class="page-container center-content">
       <UploadForm client:only />
+
+      <div class="logo-container">
+        <strong>Powered by</strong>
+        <img
+          src="/img/logos/built-with-appwrite.svg"
+          alt="Appwrite"
+          style="width: 120px;"
+        />
+        <img
+          src="/img/logos/astro-logo-dark.svg"
+          alt="Astro"
+          style="width: 90px;"
+        />
+        <img
+          src="/img/logos/react-logo.svg"
+          alt="React"
+          style="width: 110px;"
+        />
+        <img
+          src="/img/logos/cloudflare-pages.svg"
+          alt="Cloudflare"
+          style="width: 90px;"
+        />
+      </div>
     </div>
+    <Footer />
   </body>
 </html>
-<style is:global></style>
+<style lang="scss">
+  .logo-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+
+    @media (max-width: 600px) {
+      text-align: center;
+      display: block;
+    }
+
+    strong {
+      width: 160px;
+    }
+
+    img {
+      opacity: 0.5;
+      margin: 6px auto;
+      filter: grayscale(100%) brightness(60%) contrast(10000000%);
+
+      @media (max-width: 600px) {
+        display: block;
+      }
+    }
+  }
+</style>
 <script lang="ts"></script>
