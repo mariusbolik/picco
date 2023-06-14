@@ -10,8 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^6.4.0",
     "@astrojs/react": "^2.2.1",
+    "@astrojs/vercel": "^3.5.0",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@types/mime-types": "^2.1.1",
     "@types/react": "^18.0.21",
