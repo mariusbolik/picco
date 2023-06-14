@@ -9,7 +9,6 @@ import WavesDivider from "../../components/astro/WavesDivider.astro";
 import Footer from "../../components/astro/Footer.astro";
 
 import axios from "axios";
-import { Models } from "node-appwrite";
 import { Container, Row, Col, setConfiguration } from "react-grid-system";
 
 setConfiguration({ containerWidths: [540, 740, 960, 1140, 1320, 1810] });
@@ -18,7 +17,7 @@ const { id } = Astro.params;
 const href = Astro.url.href;
 
 const response = await axios.get(`${Astro.url.origin}/api/files/${id}`);
-const file = response.data as Models.File;
+const file = response.data;
 
 const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/uploads/files/${file.$id}/view?project=picco`;
 const downloadUrl = `https://cloud.appwrite.io/v1/storage/buckets/uploads/files/${file.$id}/download?project=picco`;
